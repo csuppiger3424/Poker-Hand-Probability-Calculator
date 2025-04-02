@@ -3,7 +3,7 @@ class Card:
         self.suit = suit
         self.number = number
 
-    def toString(self):
+    def __str__(self):
         if self.number == 1:
             return "Ace of " + self.suit + "s"
         elif self.number == 11:
