@@ -1,5 +1,5 @@
 import random
-from card import Card
+from Classes.card import Card
 
 class Deck:
     deck = []
@@ -11,6 +11,6 @@ class Deck:
     random.shuffle(deck)
 
     def __str__(self):
-        for i in range(len(deck.deck)):
-            print(deck.deck[i])
-        return ""
+        for i in range(len(self.deck)):
+            print(self.deck[i])
+        return "--------------------------"
