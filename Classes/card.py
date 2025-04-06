@@ -4,7 +4,7 @@ class Card:
         self.number = number
 
     def __str__(self):
-        if self.number == 1:
+        if self.number == 14:
             return "Ace of " + self.suit + "s"
         elif self.number == 11:
             return "Jack of " + self.suit + "s"

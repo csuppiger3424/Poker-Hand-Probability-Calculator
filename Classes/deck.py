@@ -3,7 +3,7 @@ from Classes.card import Card
 
 class Deck:
     deck = []
-    for i in range(1,14):
+    for i in range(2,15):
         deck.append(Card("Spade", i))
         deck.append(Card("Club", i))
         deck.append(Card("Heart", i))

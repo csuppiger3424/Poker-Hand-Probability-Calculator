@@ -4,6 +4,7 @@ from Classes.player import Player
 
 class Table:
     def __init__(self, players):
+        self.cards = []
         self.deck = Deck()
         self.players = players
         self.turn = 0
@@ -16,6 +17,15 @@ class Table:
         for i in range(len(self.players)):
             self.players[i].getCard(self.deck.deck[0])
             self.deck.deck.pop(0)
-        for i in range(len(self.players)):
             self.players[i].getCard(self.deck.deck[0])
             self.deck.deck.pop(0)
+
+    def flop(self):
+        self.deck.deck.pop(0)
+        self.cards.append(self.deck.deck.pop(0))
+        self.cards.append(self.deck.deck.pop(0))
+        self.cards.append(self.deck.deck.pop(0))
+
+    def turnRiver(self):
+        self.deck.deck.pop(0)
+        self.cards.append(self.deck.deck.pop(0))
