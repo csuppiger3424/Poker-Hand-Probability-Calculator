@@ -3,17 +3,19 @@ class Player:
     def __init__(self, name, money):
         self.name = name
         self.playing = True
-        self.money = money
-        self.hand = []
+        if money < 0:
+            raise ValueError("Money cannot be negative")
+        self.chips = money
+        self.cards_list = []
 
     def __str__(self):
-        return str(self.name + " has " + str(self.money) + " dollars")
+        return str(self.name + " has " + str(self.chips) + " dollars")
 
     def fold(self):
         self.playing = False
 
     def bet(self, money):
-        self.money -= money
+        self.chips -= money
 
-    def getCard(self, card):
-        self.hand.append(card)
+    def add_card(self, card):
+        self.cards_list.append(card)

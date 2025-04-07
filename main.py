@@ -1,8 +1,8 @@
-from Classes.card import Card
-from Classes.deck import Deck
-from Classes.player import Player
-from Classes.table import Table
-from Classes.hand import Hand
+from classes.card import Card
+from classes.deck import Deck
+from classes.player import Player
+from classes.table import Table
+from classes.hand import Hand
 
 def main():
     d = Deck()

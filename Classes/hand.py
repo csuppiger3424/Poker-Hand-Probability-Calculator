@@ -1,15 +1,24 @@
 class Hand:
     def __init__(self, hand):
-        self.hand = hand
+        if not isinstance(hand, list):
+            raise TypeError("Hand must be a list of cards")
+        if len(hand) < 2:
+            raise ValueError("A hand must contain at least 2 cards")
+        if len(hand) > 7:
+            raise ValueError("A hand cannot contain more than 7 cards")
+        self.cards_list = hand
 
     def __str__(self):
-        return ', '.join(str(card) for card in self.hand)    
+        return ', '.join(str(card) for card in self.cards_list)
     
-    def hasRoyalFlush(self):
+    def __len__(self):
+        return len(self.cards_list)
+    
+    def has_royal_flush(self):
         royalNumbers = {10, 11, 12, 13, 14}
         suit_groups = {}
 
-        for card in self.hand:
+        for card in self.cards_list:
             if card.suit not in suit_groups:
                 suit_groups[card.suit] = set()
             suit_groups[card.suit].add(card.number)
@@ -19,9 +28,9 @@ class Hand:
                 return True
         return False
     
-    def hasStraightFlush(self):
+    def has_straight_flush(self):
         suit_groups = {}
-        for card in self.hand:
+        for card in self.cards_list:
             if card.suit not in suit_groups:
                 suit_groups[card.suit] = set()
             suit_groups[card.suit].add(card.number)
@@ -34,9 +43,9 @@ class Hand:
                         return True
         return False
 
-    def hasFourOfAKind(self):
+    def has_four_of_a_kind(self):
         number_groups = {}
-        for card in self.hand:
+        for card in self.cards_list:
             if card.number not in number_groups:
                 number_groups[card.number] = 0
             number_groups[card.number] += 1
@@ -46,9 +55,9 @@ class Hand:
                 return True
         return False
 
-    def hasFullHouse(self):
+    def has_full_house(self):
         number_groups = {}
-        for card in self.hand:
+        for card in self.cards_list:
             if card.number not in number_groups:
                 number_groups[card.number] = 0
             number_groups[card.number] += 1
@@ -66,7 +75,7 @@ class Hand:
 
     def hasFlush(self):
         suit_groups = {}
-        for card in self.hand:
+        for card in self.cards_list:
             if card.suit not in suit_groups:
                 suit_groups[card.suit] = 0
             suit_groups[card.suit] += 1
@@ -77,7 +86,7 @@ class Hand:
         return False
 
     def hasStraight(self):
-        numbers = set(card.number for card in self.hand)
+        numbers = set(card.number for card in self.cards_list)
         if 14 in numbers:
             numbers.add(1)
 
@@ -90,7 +99,7 @@ class Hand:
 
     def hasThreeOfAKind(self):
         number_groups = {}
-        for card in self.hand:
+        for card in self.cards_list:
             if card.number not in number_groups:
                 number_groups[card.number] = 0
             number_groups[card.number] += 1
@@ -102,7 +111,7 @@ class Hand:
 
     def hasTwoPair(self):
         number_groups = {}
-        for card in self.hand:
+        for card in self.cards_list:
             if card.number not in number_groups:
                 number_groups[card.number] = 0
             number_groups[card.number] += 1
@@ -117,7 +126,7 @@ class Hand:
 
     def hasOnePair(self):
         number_groups = {}
-        for card in self.hand:
+        for card in self.cards_list:
             if card.number not in number_groups:
                 number_groups[card.number] = 0
             number_groups[card.number] += 1
@@ -131,13 +140,13 @@ class Hand:
         return True # If no other hand is found, it is a high card hand.
 
     def getHandType(self):
-        if self.hasRoyalFlush():
+        if self.has_royal_flush():
             return "Royal Flush"
-        elif self.hasStraightFlush():
+        elif self.has_straight_flush():
             return "Straight Flush"
-        elif self.hasFourOfAKind():
+        elif self.has_four_of_a_kind():
             return "Four of a Kind"
-        elif self.hasFullHouse():
+        elif self.has_full_house():
             return "Full House"
         elif self.hasFlush():
             return "Flush"
@@ -193,7 +202,7 @@ class Hand:
             return sorted(straight_cards)
 
         # Get the card numbers of each hand
-        self_numbers = set(card.number for card in self.hand)
+        self_numbers = set(card.number for card in self.cards_list)
         other_numbers = set(card.number for card in other_hand.hand)
 
         # Adjust for Ace in straight
@@ -210,12 +219,12 @@ class Hand:
     def compareHighCards(self, other_hand):
         def get_card_value(card):
             # Handle Ace as 1 in case of A-2-3-4-5 straight
-            if card.number == 14 and self.hasStraight() and 2 in [c.number for c in self.hand]:
+            if card.number == 14 and self.hasStraight() and 2 in [c.number for c in self.cards_list]:
                 return 1
             return card.number
 
         # Sort both hands by card value, descending
-        self_sorted = sorted(self.hand, key=get_card_value, reverse=True)
+        self_sorted = sorted(self.cards_list, key=get_card_value, reverse=True)
         other_sorted = sorted(other_hand.hand, key=get_card_value, reverse=True)
 
         # Compare the cards from highest to lowest
@@ -228,4 +237,4 @@ class Hand:
 
 
     def __str__(self):
-        return ', '.join(str(card) for card in self.hand)    
+        return ', '.join(str(card) for card in self.cards_list)    
