@@ -162,7 +162,6 @@ class Hand:
             return "High Card"
 
     def compare_high_card(self, other_hand):
-        """Compare two hands with High Card."""
         sorted_self = sorted([card.number for card in self.cards_list], reverse=True)
         sorted_other = sorted([card.number for card in other_hand.cards_list], reverse=True)
 
@@ -171,10 +170,9 @@ class Hand:
                 return 1
             elif card1 < card2:
                 return -1
-        return 0  # Tie
+        return 0
 
     def compare_one_pair(self, other_hand):
-        """Compare two hands with One Pair."""
         def get_pair_value(hand):
             number_groups = {}
             for card in hand.cards_list:
@@ -195,7 +193,6 @@ class Hand:
             return self.compare_high_card(other_hand)
 
     def compare_two_pair(self, other_hand):
-        """Compare two hands with Two Pair."""
         def get_pairs(hand):
             number_groups = {}
             for card in hand.cards_list:
@@ -215,7 +212,6 @@ class Hand:
         return self.compare_high_card(other_hand)
 
     def compare_three_of_a_kind(self, other_hand):
-        """Compare two hands with Three of a Kind."""
         def get_three_of_a_kind_value(hand):
             number_groups = {}
             for card in hand.cards_list:
@@ -236,7 +232,6 @@ class Hand:
             return self.compare_high_card(other_hand)
 
     def compare_straight(self, other_hand):
-        """Compare two hands with a Straight, considering Ace as low."""
         def get_straight_high_card(hand):
             numbers = set(card.number for card in hand.cards_list)
             if 14 in numbers:
@@ -258,7 +253,6 @@ class Hand:
             return 0  # Tie
 
     def compare_flush(self, other_hand):
-        """Compare two hands with a Flush."""
         sorted_self = sorted([card.number for card in self.cards_list], reverse=True)
         sorted_other = sorted([card.number for card in other_hand.cards_list], reverse=True)
 
@@ -270,7 +264,6 @@ class Hand:
         return 0  # Tie
 
     def compare_full_house(self, other_hand):
-        """Compare two hands with a Full House."""
         def get_full_house_values(hand):
             number_groups = {}
             for card in hand.cards_list:
@@ -294,7 +287,6 @@ class Hand:
             return 0  # Tie
 
     def compare_four_of_a_kind(self, other_hand):
-        """Compare two hands with Four of a Kind."""
         def get_four_of_a_kind_value(hand):
             number_groups = {}
             for card in hand.cards_list:
@@ -315,15 +307,12 @@ class Hand:
             return self.compare_high_card(other_hand)
 
     def compare_straight_flush(self, other_hand):
-        """Compare two hands with a Straight Flush, considering Ace as low."""
         return self.compare_straight(other_hand)
 
     def compare_royal_flush(self, other_hand):
-        """Compare two hands with a Royal Flush (always a tie)."""
-        return 0  # Royal Flushes are always tied
+        return 0
 
     def compare_with(self, other_hand):
-        """Compare two hands and determine the winner."""
         hand_rankings = [
             "High Card", "One Pair", "Two Pair", "Three of a Kind",
             "Straight", "Flush", "Full House", "Four of a Kind",
@@ -338,7 +327,6 @@ class Hand:
         elif self_rank < other_rank:
             return -1
         else:
-            # If ranks are the same, use specific comparison methods
             comparison_methods = {
                 "High Card": self.compare_high_card,
                 "One Pair": self.compare_one_pair,
