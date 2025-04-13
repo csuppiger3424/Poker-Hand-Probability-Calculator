@@ -18,8 +18,6 @@ def test_hand_init():
 
 def test_invalid_hand_init():
     with pytest.raises(ValueError):
-        Hand([Card("Heart", 10)])
-    with pytest.raises(ValueError):
         Hand([Card("Heart", 10), Card("Spade", 11), Card("Diamond", 12), Card("Club", 13), Card("Heart", 14), Card("Spade", 15), Card("Diamond", 16)])
 
 def test_hand_str():
@@ -429,3 +427,23 @@ def test_compare_with():
     hand1 = Hand([Card("Spade", 14), Card("Heart", 2), Card("Diamond", 3), Card("Club", 4), Card("Spade", 5)])  # A-2-3-4-5
     hand2 = Hand([Card("Spade", 10), Card("Heart", 11), Card("Diamond", 12), Card("Club", 13), Card("Spade", 14)])  # 10-J-Q-K-A
     assert hand1.compare_with(hand2) == -1  # Hand 2 wins
+
+def test_add_card():
+    # Add a card to a hand with fewer than 7 cards
+    list_of_cards = [Card("Heart", 10), Card("Spade", 11)]
+    hand = Hand(list_of_cards)
+    new_card = Card("Diamond", 12)
+    hand.add_card(new_card)
+    assert len(hand.cards_list) == 3
+    assert hand.cards_list[-1] == new_card
+
+    # Add multiple cards to a hand until it reaches 7 cards
+    hand.add_card(Card("Club", 13))
+    hand.add_card(Card("Heart", 14))
+    hand.add_card(Card("Spade", 2))
+    hand.add_card(Card("Diamond", 3))
+    assert len(hand.cards_list) == 7
+
+    # Attempt to add a card to a hand with 7 cards
+    with pytest.raises(ValueError, match="A hand cannot contain more than 7 cards"):
+        hand.add_card(Card("Club", 4))

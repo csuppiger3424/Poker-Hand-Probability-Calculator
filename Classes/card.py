@@ -19,3 +19,13 @@ class Card:
             return "King of " + self.suit + "s"
         else:
             return str(self.number) + " of " + self.suit + "s"
+
+    def compare_card(self, other_card):
+        """
+        Compare this card with another card based on suit and number.
+        Args:
+            other_card (Card): The card to compare with.
+        Returns:
+            bool: True if the cards have the same suit and number, False otherwise.
+        """
+        return self.suit == other_card.suit and self.number == other_card.number
