@@ -28,10 +28,10 @@ def main():
     Main function to run multiple poker game simulations and calculate a confidence interval.
     """
     player_num = 4
-    num_games = 1000
-    num_simulations = 500  # Number of simulations to run
-    player_cards = [Card("Heart", 2), Card("Club", 7)]  # Example player cards
-    table_cards = [Card("Heart", 3), Card("Spade", 11), Card("Club", 5), Card("Club", 4)]  # Example table cards
+    num_games = 10000
+    num_simulations = 10  # Number of simulations to run
+    player_cards = [Card("Heart", 14), Card("Diamond", 14)]  # Example player cards
+    table_cards = [Card("Heart", 13), Card("Spade", 13), Card("Club", 11)]  # Example table cards
 
     win_percentages = []
 

@@ -1,0 +1,25 @@
+/* Results Container */
+.results-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* Results Header */
+.results-container h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Results Text */
+.results-container p {
+  font-size: 1.2rem;
+  color: #555;
+  margin: 0.5rem 0;
+}
