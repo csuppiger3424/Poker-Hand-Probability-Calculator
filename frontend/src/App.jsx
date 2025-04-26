@@ -15,10 +15,16 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch simulation results');
+      }
+
       const data = await response.json();
-      setResults(data);
+      setResults(data); // Update the results state with the backend response
     } catch (error) {
       console.error('Error running simulation:', error);
+      alert('An error occurred while running the simulation. Please try again.');
     }
   };
 

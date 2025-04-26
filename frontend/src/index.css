@@ -24,10 +24,20 @@ a:hover {
 
 body {
   margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: none; /* Remove the max-width constraint */
+  overflow-x: visible; /* Allow horizontal expansion if needed */
+}
+
+#root {
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  justify-content: center; /* Center the content horizontally */
+  align-items: flex-start; /* Align content at the top */
+  width: 100%; /* Allow the content to take up the full width */
+  max-width: none; /* Remove the max-width constraint */
+  min-height: 100vh; /* Ensure it takes up the full viewport height */
+  overflow-x: visible; /* Prevent horizontal clipping */
 }
 
 h1 {

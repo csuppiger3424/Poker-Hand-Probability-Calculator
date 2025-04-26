@@ -1,58 +1,105 @@
-/* Form Container */
+/* Center the Form */
 .simulation-form {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Full viewport height */
   margin: 0 auto;
+  padding: 20px;
+  background-color: blue; /* Background color for the entire form */
+  color: white; /* Set text color to white for better contrast */
 }
 
-/* Form Labels */
-.simulation-form label {
-  display: block;
+/* Form Container */
+.form-container {
+  background-color: white; /* White background for the form */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box; /* Ensure padding is included in the width/height */
+  width: fit-content; /* Dynamically adjust width to fit content */
+  max-width: 100%; /* Prevent it from exceeding the viewport width */
+  margin: 0 auto; /* Center the form horizontally */
+  color: black; /* Set text color to black for contrast inside the white container */
+}
+
+/* Card Grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(13, 1fr); /* 13 cards per row */
+  gap: 10px;
+  margin: 20px 0; /* Add margin outside the card grid */
+  justify-content: center; /* Center the grid horizontally */
+  width: fit-content; /* Dynamically adjust width to fit content */
+  box-sizing: border-box; /* Include padding in the width calculation */
+}
+
+/* Card Button */
+.card {
+  padding: 100px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  background-color: blueviolet;
+  color: white; /* Ensure text is visible on the purple background */
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+/* Hover Effect */
+.card:hover {
+  background-color: #f0f0f0;
+  color: black; /* Change text color to black on hover for better contrast */
+}
+
+/* Selected Card */
+.card.selected {
+  background-color: #007bff; /* Blue background for selected cards */
+  color: white; /* White text for contrast */
+  border: 2px solid #0056b3; /* Darker blue border for emphasis */
+  cursor: not-allowed; /* Disable pointer events for selected cards */
+}
+
+/* Selected Cards Display */
+.selected-cards {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center; /* Center the selected cards horizontally */
+  color: white; /* Ensure text is visible on the blue background */
+}
+
+.selected-cards span {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f9fa; /* Light gray background */
   font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: #333;
+  color: black; /* Black text for contrast inside the light gray background */
 }
 
 /* Form Inputs */
 .simulation-form input,
-.simulation-form textarea,
 .simulation-form button {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ced4da;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
+  width: 100%;
+  max-width: 300px;
+  background-color: white; /* Set a white background for better contrast */
+  color: black; /* Ensure text inside inputs is visible */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
 }
 
-/* Textarea */
-.simulation-form textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-/* Submit Button */
-.simulation-form button {
-  background-color: #007bff; /* Bootstrap primary color */
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.simulation-form button:hover {
-  background-color: #0056b3;
-}
-
-/* Error Message */
-.simulation-form p {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: -0.5rem;
-  margin-bottom: 1rem;
+/* Input Focus State */
+.simulation-form input:focus {
+  outline: none; /* Remove the default outline */
+  border: 1px solid #007bff; /* Add a blue border on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a glow effect on focus */
 }

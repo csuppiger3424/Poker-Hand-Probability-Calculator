@@ -1,8 +1,16 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # Import Flask-CORS
+
+# Add the parent directory to the Python path
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from classes.simulation import Simulation
 from classes.card import Card
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 @app.route('/simulate', methods=['POST'])
 def simulate():

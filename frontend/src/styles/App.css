@@ -1,12 +1,13 @@
 /* General Layout */
 #root {
-  max-width: 1280px;
+  width: 100%; /* Allow the root to take up the full width */
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
   font-family: Arial, sans-serif;
   background-color: #f8f9fa; /* Light gray background */
   min-height: 100vh;
+  overflow-x: visible; /* Prevent horizontal clipping */
 }
 
 /* Header Section */
@@ -29,6 +30,10 @@
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+  width: fit-content; /* Dynamically adjust width to fit content */
+  max-width: none; /* Remove width constraints */
+  margin: 0 auto; /* Center the content */
+  overflow-x: visible; /* Prevent horizontal clipping */
 }
 
 /* Form Styling */
@@ -37,8 +42,9 @@
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
+  width: fit-content; /* Dynamically adjust width to fit the card grid */
+  max-width: none; /* Remove width constraints */
+  margin: 0 auto; /* Center the form */
 }
 
 .simulation-form label {
@@ -76,8 +82,9 @@
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 600px;
+  width: fit-content; /* Dynamically adjust width to fit content */
+  max-width: none; /* Remove width constraints */
+  margin: 0 auto; /* Center the results container */
 }
 
 .results-container h2 {
