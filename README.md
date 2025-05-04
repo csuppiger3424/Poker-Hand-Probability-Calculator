@@ -49,12 +49,38 @@ The Poker Calculator is a web-based tool designed to simulate poker games and ca
 ### Prerequisites
 
 - Node.js and npm installed on your machine.
+- Python installed on your machine.
 
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/your-username/PokerCalculator.git
-   cd PokerCalculator/frontend
-
+   cd PokerCalculator
    ```
+
+2. Start the backend:
+
+   ```bash
+   cd backend
+   python api.py
+   ```
+
+3. Start the frontend:
+
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+4. Open the app in your browser at `http://localhost:5173`.
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
