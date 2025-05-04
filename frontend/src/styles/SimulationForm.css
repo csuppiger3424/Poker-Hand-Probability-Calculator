@@ -3,28 +3,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh; /* Full viewport height */
+  justify-content: flex-start; /* Align content to the top */
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px; /* Reduce padding */
   background-color: blue; /* Background color for the entire form */
   color: white; /* Set text color to white for better contrast */
 }
 
+/* Shared Label and Button Text Style */
+.simulation-form label,
+.simulation-form button {
+  font-size: 1.2rem; /* Set a consistent font size */
+  font-weight: bold; /* Make the text bold */
+  text-align: center; /* Center the text */
+}
+
 /* Form Container */
 .form-container {
-  background-color: white; /* White background for the form */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box; /* Ensure padding is included in the width/height */
-  width: fit-content; /* Dynamically adjust width to fit content */
-  max-width: 100%; /* Prevent it from exceeding the viewport width */
-  margin: 0 auto; /* Center the form horizontally */
-  color: black; /* Set text color to black for contrast inside the white container */
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  color: black;
 }
 
 /* Card Grid */
@@ -40,20 +43,45 @@
 
 /* Card Button */
 .card {
-  padding: 100px;
-  border: 1px solid #000000;
-  border-radius: 4px;
-  text-align: center;
+  padding: 0;
+  border: none;
+  background: none;
   cursor: pointer;
-  background-color: blueviolet;
-  color: white; /* Ensure text is visible on the purple background */
-  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
 }
 
-/* Hover Effect */
-.card:hover {
-  background-color: #f0f0f0;
-  color: black; /* Change text color to black on hover for better contrast */
+.card img {
+  width: 100px; /* Adjust size as needed */
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover img {
+  transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+.card.selected img {
+  border: 2px solid #007bff; /* Highlight selected cards */
+}
+
+/* Card Image */
+.card-image {
+  width: 100px; /* Adjust size as needed */
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  border: none; /* Remove any border */
+  background: none; /* Match the background color */
+}
+
+.card-image:hover {
+  transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+.card-image.selected {
+  border: 2px solid #007bff; /* Highlight selected cards */
+  opacity: 0.5; /* Dim selected cards */
+  pointer-events: none; /* Disable clicks on selected cards */
 }
 
 /* Selected Card */
@@ -64,29 +92,58 @@
   cursor: not-allowed; /* Disable pointer events for selected cards */
 }
 
-/* Selected Cards Display */
-.selected-cards {
-  margin-top: 10px;
+/* Cards Section */
+.cards-section {
   display: flex;
-  gap: 10px;
-  justify-content: center; /* Center the selected cards horizontally */
-  color: white; /* Ensure text is visible on the blue background */
+  gap: 20px; /* Add spacing between player and table cards */
+  justify-content: center; /* Center the cards section horizontally */
+  align-items: flex-start; /* Align the cards to the top */
+  margin-top: 20px; /* Add some margin above the cards section */
+  margin-bottom: 30px; /* Add more space below the cards section */
 }
 
-.selected-cards span {
-  padding: 5px 10px;
+/* Selected Cards Display */
+.selected-cards {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 220px; /* Reduced width for player cards */
+  height: 160px; /* Keep the height consistent */
   border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f9fa; /* Light gray background */
-  font-weight: bold;
-  color: black; /* Black text for contrast inside the light gray background */
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px; /* Add space below the selected cards */
+}
+
+.table-cards {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 520px; /* Adjust width for 5 table cards */
+  height: 160px; /* Adjust height for card images */
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Selected Card Images */
+.selected-cards img,
+.table-cards img {
+  width: 90px; /* Adjust width to make the cards smaller */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 12px; /* Add rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional: Add a subtle shadow */
 }
 
 /* Form Inputs */
 .simulation-form input,
 .simulation-form button {
-  margin: 10px 0;
-  padding: 10px;
+  margin: 5px 0; /* Reduce vertical margin for inputs and buttons */
+  padding: 10px; /* Keep padding for better spacing */
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
@@ -102,4 +159,127 @@
   outline: none; /* Remove the default outline */
   border: 1px solid #007bff; /* Add a blue border on focus */
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a glow effect on focus */
+}
+
+/* Button Styles */
+.simulation-form button {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2rem; /* Match the font size with labels */
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+}
+
+.simulation-form button:enabled {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.simulation-form button[type="button"] {
+  background-color: #f8f9fa; /* Light gray background for reset button */
+  color: #333; /* Darker text color */
+  cursor: pointer;
+}
+
+.simulation-form button[type="button"]:hover {
+  background-color: #e2e6ea; /* Slightly darker gray on hover */
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  gap: 10px; /* Add spacing between buttons */
+  justify-content: center; /* Center the buttons */
+  margin-top: 10px; /* Reduce margin above the buttons */
+  margin-bottom: 0; /* Remove margin below the buttons */
+}
+
+/* Input Group */
+.input-group {
+  display: flex;
+  gap: 40px; /* Space between input fields */
+  justify-content: center; /* Center the input group horizontally */
+  align-items: center; /* Center the input fields vertically */
+  margin: 10px 0; /* Reduce vertical margin */
+}
+
+.input-group div {
+  display: flex;
+  flex-direction: column; /* Stack the label and input vertically */
+  align-items: center; /* Center the label and input */
+  text-align: center; /* Center the text inside the div */
+  margin: 0; /* Remove extra margin */
+}
+
+/* Input Group Labels */
+.input-group label {
+  font-size: 1.2rem; /* Ensure consistency with buttons */
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  font-size: 1.1rem; /* Make the input text larger */
+  padding: 10px; /* Add padding for better spacing */
+  text-align: center; /* Center the text inside the input */
+}
+
+/* Simulation Container */
+.simulation-container {
+  display: flex;
+  gap: 60px; /* Increase space between the left panel and the form */
+  justify-content: flex-start; /* Align items to the top */
+  align-items: flex-start; /* Align the panel and form to the top */
+  padding: 10px 20px; /* Reduce padding */
+  min-height: auto; /* Remove unnecessary height constraints */
+  box-sizing: border-box;
+}
+
+/* Description Panel */
+.description-panel {
+  width: 300px; /* Fixed width for the panel */
+  background-color: #f8f9fa; /* Light gray background */
+  color: #333; /* Dark text color */
+  border: 1px solid #ccc; /* Subtle border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+}
+
+.description-panel h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.description-panel p {
+  margin-bottom: 10px;
+}
+
+.description-panel ol {
+  padding-left: 20px; /* Indent the list */
+}
+
+/* Left Panel */
+.left-panel {
+  display: flex;
+  flex-direction: column; /* Stack the panels vertically */
+  gap: 20px; /* Add spacing between the panels */
+  width: 300px; /* Fixed width for the left panel */
+}
+
+/* Results Panel */
+.results-panel {
+  width: 100%; /* Match the width of the description panel */
+  background-color: #f8f9fa; /* Light gray background */
+  color: #333; /* Dark text color */
+  border: 1px solid #ccc; /* Subtle border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
 }
