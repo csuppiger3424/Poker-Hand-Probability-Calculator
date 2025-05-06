@@ -64,22 +64,32 @@ class Hand:
         return False
 
     def has_full_house(self):
+        """
+        Check if the hand contains a Full House.
+        """
         if len(self.cards_list) < 5:
             return False
+
+        # Count the occurrences of each card number
         number_groups = {}
         for card in self.cards_list:
             number_groups[card.number] = number_groups.get(card.number, 0) + 1
-        
-        has_three_of_a_kind = False
-        has_pair = False
-        
-        for count in number_groups.values():
-            if count == 3:
-                has_three_of_a_kind = True
-            elif count == 2:
-                has_pair = True
-        
-        return has_three_of_a_kind and has_pair
+
+        # Find all three-of-a-kinds and pairs
+        three_of_a_kinds = [number for number, count in number_groups.items() if count >= 3]
+        pairs = [number for number, count in number_groups.items() if count >= 2]
+
+        # A Full House requires at least one three-of-a-kind and one pair
+        if three_of_a_kinds:
+            # Remove the three-of-a-kind from the pairs list to ensure distinctness
+            three_of_a_kind = three_of_a_kinds[0]
+            pairs = [pair for pair in pairs if pair != three_of_a_kind]
+
+            # Check if there is at least one remaining pair
+            if pairs:
+                return True
+
+        return False
 
     def has_flush(self):
         if len(self.cards_list) < 5:
@@ -115,7 +125,7 @@ class Hand:
             number_groups[card.number] = number_groups.get(card.number, 0) + 1
         
         for count in number_groups.values():
-            if count == 3:
+            if count >= 3:
                 return True
         return False
 
@@ -129,7 +139,7 @@ class Hand:
         pair_count = 0
         
         for count in number_groups.values():
-            if count == 2:
+            if count >= 2:
                 pair_count += 1
         
         return pair_count >= 2
@@ -142,7 +152,7 @@ class Hand:
             number_groups[card.number] = number_groups.get(card.number, 0) + 1
         
         for count in number_groups.values():
-            if count == 2:
+            if count >= 2:
                 return True
         return False
 
@@ -198,17 +208,28 @@ class Hand:
             "High Card"
         ]
 
+        # Get the hand types
         self_hand_type = self.get_hand_type()
         other_hand_type = other_hand.get_hand_type()
 
-        if hand_rankings.index(self_hand_type) < hand_rankings.index(other_hand_type):
-            return 1
-        elif hand_rankings.index(self_hand_type) > hand_rankings.index(other_hand_type):
-            return -1
+        # Compare hand rankings
+        self_rank = hand_rankings.index(self_hand_type)
+        other_rank = hand_rankings.index(other_hand_type)
+
+        if self_rank < other_rank:
+            return 1  # self is stronger
+        elif self_rank > other_rank:
+            return -1  # other_hand is stronger
         else:
             # If hand types are the same, compare based on specific hand rules
-            if self_hand_type == "Four of a Kind":
+            if self_hand_type == "Royal Flush":
+                return 0  # Royal Flushes are always tied
+            elif self_hand_type == "Straight Flush":
+                return self.compare_straight(other_hand)
+            elif self_hand_type == "Four of a Kind":
                 return self.compare_four_of_a_kind(other_hand)
+            elif self_hand_type == "Full House":
+                return self.compare_full_house(other_hand)
             elif self_hand_type == "Flush":
                 return self.compare_flush(other_hand)
             elif self_hand_type == "Straight":
@@ -226,24 +247,41 @@ class Hand:
         """
         Compare two hands with Four of a Kind.
         """
-        def get_four_of_a_kind_value(hand):
+        def get_four_of_a_kind_value_and_kicker(hand):
             number_groups = {}
             for card in hand.cards_list:
                 number_groups[card.number] = number_groups.get(card.number, 0) + 1
-            for number, count in number_groups.items():
-                if count == 4:
-                    return number
-            return 0
 
-        self_value = get_four_of_a_kind_value(self)
-        other_value = get_four_of_a_kind_value(other_hand)
+            # Find the value of the four of a kind
+            four_of_a_kind = max(
+                [number for number, count in number_groups.items() if count == 4],
+                default=0
+            )
 
+            # Get the remaining card (kicker)
+            kicker = max(
+                [number for number, count in number_groups.items() if count < 4],
+                default=0
+            )
+
+            return four_of_a_kind, kicker
+
+        self_value, self_kicker = get_four_of_a_kind_value_and_kicker(self)
+        other_value, other_kicker = get_four_of_a_kind_value_and_kicker(other_hand)
+
+        # Compare the four of a kind values
         if self_value > other_value:
             return 1
         elif self_value < other_value:
             return -1
-        else:
-            return self.compare_high_card(other_hand)
+
+        # Compare the kicker
+        if self_kicker > other_kicker:
+            return 1
+        elif self_kicker < other_kicker:
+            return -1
+
+        return 0
 
     def compare_flush(self, other_hand):
         """
@@ -267,12 +305,35 @@ class Hand:
             number_groups = {}
             for card in hand.cards_list:
                 number_groups[card.number] = number_groups.get(card.number, 0) + 1
-            three_of_a_kind = max([number for number, count in number_groups.items() if count == 3], default=0)
-            pair = max([number for number, count in number_groups.items() if count == 2], default=0)
+
+            # Find all values with three-of-a-kind
+            three_of_a_kinds = sorted(
+                [number for number, count in number_groups.items() if count >= 3],
+                reverse=True
+            )
+
+            # Select the highest three-of-a-kind
+            three_of_a_kind = three_of_a_kinds[0] if three_of_a_kinds else 0
+
+            # Remove the selected three-of-a-kind from consideration for the pair
+            if three_of_a_kind:
+                number_groups.pop(three_of_a_kind)
+
+            # Find all values with pairs (or remaining three-of-a-kind treated as pairs)
+            pairs = sorted(
+                [number for number, count in number_groups.items() if count >= 2],
+                reverse=True
+            )
+
+            # Select the highest pair
+            pair = pairs[0] if pairs else 0
+
             return three_of_a_kind, pair
 
         self_three, self_pair = get_full_house_values(self)
+        print(f"Self Three: {self_three}, Self Pair: {self_pair}")
         other_three, other_pair = get_full_house_values(other_hand)
+        print(f"Other Three: {other_three}, Other Pair: {other_pair}")
 
         if self_three > other_three:
             return 1
@@ -313,69 +374,124 @@ class Hand:
         """
         Compare two hands with Three of a Kind.
         """
-        def get_three_of_a_kind_value(hand):
+        def get_three_of_a_kind_value_and_kickers(hand):
             number_groups = {}
             for card in hand.cards_list:
                 number_groups[card.number] = number_groups.get(card.number, 0) + 1
-            for number, count in number_groups.items():
-                if count == 3:
-                    return number
-            return 0
 
-        self_value = get_three_of_a_kind_value(self)
-        other_value = get_three_of_a_kind_value(other_hand)
+            # Find the value of the three of a kind
+            three_of_a_kind = max(
+                [number for number, count in number_groups.items() if count == 3],
+                default=0
+            )
 
+            # Get the remaining cards (kickers)
+            kickers = sorted(
+                [number for number, count in number_groups.items() if count < 3],
+                reverse=True
+            )
+
+            return three_of_a_kind, kickers
+
+        self_value, self_kickers = get_three_of_a_kind_value_and_kickers(self)
+        other_value, other_kickers = get_three_of_a_kind_value_and_kickers(other_hand)
+
+        # Compare the three of a kind values
         if self_value > other_value:
             return 1
         elif self_value < other_value:
             return -1
-        else:
-            return self.compare_high_card(other_hand)
+
+        # Compare kickers
+        for self_kicker, other_kicker in zip(self_kickers, other_kickers):
+            if self_kicker > other_kicker:
+                return 1
+            elif self_kicker < other_kicker:
+                return -1
+
+        return 0
 
     def compare_two_pair(self, other_hand):
         """
         Compare two hands with Two Pair.
         """
-        def get_pairs(hand):
+        def get_two_pair_values_and_kicker(hand):
             number_groups = {}
             for card in hand.cards_list:
                 number_groups[card.number] = number_groups.get(card.number, 0) + 1
-            pairs = sorted([number for number, count in number_groups.items() if count == 2], reverse=True)
-            return pairs
 
-        self_pairs = get_pairs(self)
-        other_pairs = get_pairs(other_hand)
+            # Find the two pairs
+            pairs = sorted(
+                [number for number, count in number_groups.items() if count == 2],
+                reverse=True
+            )
 
+            # Get the remaining card (kicker)
+            kicker = max(
+                [number for number, count in number_groups.items() if count < 2],
+                default=0
+            )
+
+            return pairs, kicker
+
+        self_pairs, self_kicker = get_two_pair_values_and_kicker(self)
+        other_pairs, other_kicker = get_two_pair_values_and_kicker(other_hand)
+
+        # Compare the pairs
         for self_pair, other_pair in zip(self_pairs, other_pairs):
             if self_pair > other_pair:
                 return 1
             elif self_pair < other_pair:
                 return -1
 
-        return self.compare_high_card(other_hand)
+        # Compare the kicker
+        if self_kicker > other_kicker:
+            return 1
+        elif self_kicker < other_kicker:
+            return -1
+
+        return 0
 
     def compare_one_pair(self, other_hand):
         """
         Compare two hands with One Pair.
         """
-        def get_pair_value(hand):
+        def get_pair_value_and_kickers(hand):
             number_groups = {}
             for card in hand.cards_list:
                 number_groups[card.number] = number_groups.get(card.number, 0) + 1
-            for number, count in number_groups.items():
-                if count == 2:
-                    return number
-            return 0
 
-        self_value = get_pair_value(self)
-        other_value = get_pair_value(other_hand)
+            # Find the pair
+            pair = max(
+                [number for number, count in number_groups.items() if count == 2],
+                default=0
+            )
 
-        if self_value > other_value:
+            # Get the remaining cards (kickers)
+            kickers = sorted(
+                [number for number, count in number_groups.items() if count < 2],
+                reverse=True
+            )
+
+            return pair, kickers
+
+        self_pair, self_kickers = get_pair_value_and_kickers(self)
+        other_pair, other_kickers = get_pair_value_and_kickers(other_hand)
+
+        # Compare the pair values
+        if self_pair > other_pair:
             return 1
-        elif self_value < other_value:
+        elif self_pair < other_pair:
             return -1
-        else:
-            return self.compare_high_card(other_hand)
+
+        # Compare kickers
+        for self_kicker, other_kicker in zip(self_kickers, other_kickers):
+            if self_kicker > other_kicker:
+                return 1
+            elif self_kicker < other_kicker:
+                return -1
+
+        return 0
 
     def compare_high_card(self, other_hand):
         """
@@ -384,10 +500,12 @@ class Hand:
         self_numbers = sorted([card.number for card in self.cards_list], reverse=True)
         other_numbers = sorted([card.number for card in other_hand.cards_list], reverse=True)
 
+        # Compare each card in descending order
         for self_num, other_num in zip(self_numbers, other_numbers):
             if self_num > other_num:
                 return 1
             elif self_num < other_num:
                 return -1
+
         return 0
 

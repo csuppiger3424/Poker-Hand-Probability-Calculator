@@ -428,6 +428,10 @@ def test_compare_with():
     hand2 = Hand([Card("Spade", 10), Card("Heart", 11), Card("Diamond", 12), Card("Club", 13), Card("Spade", 14)])  # 10-J-Q-K-A
     assert hand1.compare_with(hand2) == -1  # Hand 2 wins
 
+    hand1 = Hand([Card("Heart", 5), Card("Heart", 6), Card("Diamond", 5), Card("Diamond", 6), Card("Diamond", 10), Card("Club", 5), Card("Club", 6)])
+    hand2 = Hand([Card("Heart", 6), Card("Spade", 4), Card("Diamond", 5), Card("Diamond", 6), Card("Diamond", 10), Card("Club", 5), Card("Club", 6)])
+    assert hand1.compare_with(hand2) == 0  # Hand 2 wins
+
 def test_add_card():
     # Add a card to a hand with fewer than 7 cards
     list_of_cards = [Card("Heart", 10), Card("Spade", 11)]
